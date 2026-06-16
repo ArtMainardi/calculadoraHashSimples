@@ -4,30 +4,40 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Scanner;
 
 public class Main {
+    static Scanner sc = new Scanner(System.in);
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Digite a palavra que você quer codificar: ");
-        String origem = sc.nextLine();
+        HashCreator hash = new HashCreator();
+        String origem, hashFinal;
+        int option;
 
-        // Codificando:
-        try{
-            MessageDigest hash = MessageDigest.getInstance("SHA-256");
-            byte[] hashBytes = hash.digest(origem.getBytes(StandardCharsets.UTF_8));
+        do{
+            System.out.println("============================");
+            System.out.println("===== CALCULADORA HASH =====");
+            System.out.println("============================");
+            System.out.println("1- Criar um hash \n"
+                            + "0- Sair"
+            );
+            option = sc.nextInt();
 
-            StringBuilder hexString = new StringBuilder();
-            for(byte b : hashBytes){
-                String hex = Integer.toHexString(0xff & b);
-                if (hex.length() == 1) {
-                    hexString.append('0'); // Garante que cada byte tenha 2 caracteres
-                }
-                hexString.append(hex);
+            switch (option){
+                case 1:
+                    System.out.println("Digite o texto que você quer codificar: ");
+                    sc.nextLine();
+                    origem = sc.nextLine();
+                    hashFinal = hash.hashing(origem);
+                    System.out.println("\nTexto de origem: " + origem);
+                    System.out.println("Texto codificado: " + hashFinal);
+                    continuar();
+                    break;
+                default:
+                    System.out.println("ERROR: opção digitada inválida!");
             }
+        }while(option != 0);
+    }
 
-            String hashFinal = hexString.toString();
-            System.out.println("Texto Original: " + origem);
-            System.out.println("Hash SHA-256  : " + hashFinal);
-        } catch (NoSuchAlgorithmException e){
-            System.err.println("Algoritmo de hash não encontrado: " + e.getMessage());
-        }
+    public static void continuar(){
+        System.out.println("Pressione ENTER para continuar");
+        sc.nextLine();
+        System.out.println("\n\n\n\n");
     }
 }
